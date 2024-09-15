@@ -23,7 +23,11 @@ function App() {
   const updateBookStatus = async (book, targetShelf) => {
     console.log("🚀 ~ updateBookStatus ~ targetShelf:", targetShelf);
     await BooksAPI.update(book, targetShelf);
-    getAllListOfBook();
+    const updateLstBook = lstBook.map((b) =>
+      b.id !== book.id ? b : Object.assign({}, b, { shelf: targetShelf })
+    );
+    console.log("🚀 ~ updateBookStatus ~ updateLstBook:", updateLstBook);
+    setLstBook(updateLstBook);
     navigate("/");
   };
 
