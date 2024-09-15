@@ -1,13 +1,19 @@
 import { useState } from "react";
 import BookshelfChanger from "./BookshelfChanger";
 
-const Book = ({ data }) => {
+const Book = ({ data, onUpdateBookshelf }) => {
   const [selectedOption, setSelectedOption] = useState("");
 
   const handleChange = (event) => {
     const option = event.target.value;
+    const currentShelf = data.shelf;
+    console.log("🚀 ~ handleChange ~ currentShelf:", currentShelf);
     console.log("🚀 ~ handleChange ~ option:", option);
-    setSelectedOption(option);
+
+    if (currentShelf !== option) {
+      onUpdateBookshelf(data, option);
+      setSelectedOption(option);
+    }
   };
 
   return (
