@@ -34,6 +34,8 @@ function App() {
           </div>
           <div className="list-books-content">
             <Bookshelf title="Currently Reading" />
+            <Bookshelf title="Want to Read" />
+            <Bookshelf title="Read" />
           </div>
           <div className="open-search">
             <a onClick={() => setShowSearchpage(!showSearchPage)}>Add a book</a>
