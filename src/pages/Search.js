@@ -2,41 +2,30 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import Book from "../components/Book";
 import * as BooksAPI from "../utils/BooksAPI";
+import { MAX_RESULT } from "../utils/constants";
+import { debounce } from "../utils/debounce";
 
 const Search = ({ onUpdateBookshelf }) => {
-  const [query, setQuery] = useState("");
-  const [lstSearchBook, setLstSearchBook] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [lstSearchBookResults, setLstSearchBookResults] = useState([]);
 
-  useState(() => {
-    const getLstSearchBook = async () => {
-      if (query.length > 0) {
-        const res = await BooksAPI.search(query, 10);
-        console.log("🚀 ~ getLstSearchBook ~ res:", res);
-        setLstSearchBook(res);
-      }
-    };
-
-    getLstSearchBook();
-  }, [query]);
-
-  const updateQuery = (query) => {
-    let q = query.trim();
-    console.log("🚀 ~ updateQuery ~ q:", q);
-    setQuery(q);
+  const handleSearchInputChange = (value) => {
+    const query = value.trim();
+    setSearchQuery(query);
+    if (query.length > 0) {
+      debouncedSearchResults(query);
+    } else {
+      setLstSearchBookResults([]);
+    }
   };
 
-  const clearQuery = () => {
-    updateQuery("");
+  const handleSearchBook = async (searchQuery) => {
+    const res = await BooksAPI.search(searchQuery, MAX_RESULT);
+    console.log("🚀 ~ getLstSearchBook ~ res:", res);
+    setLstSearchBookResults(res);
   };
 
-  const lstFilteredBook =
-    query === ""
-      ? lstSearchBook
-      : lstSearchBook.filter(
-          (b) =>
-            b.title.toLowerCase().includes(query.toLowerCase()) ||
-            b.description.toLowerCase().includes(query.toLowerCase())
-        );
+  const debouncedSearchResults = debounce(handleSearchBook, 300); // 300ms delay
 
   return (
     <div className="search-books">
@@ -47,16 +36,16 @@ const Search = ({ onUpdateBookshelf }) => {
         <div className="search-books-input-wrapper">
           <input
             type="text"
-            value={query}
+            value={searchQuery}
             placeholder="Search by title, author, or ISBN"
-            onChange={(event) => updateQuery(event.target.value)}
+            onChange={(event) => handleSearchInputChange(event.target.value)}
           />
         </div>
       </div>
       <div className="search-books-results">
         <ol className="books-grid">
-          {lstFilteredBook &&
-            lstFilteredBook.map((book) => (
+          {lstSearchBookResults.length > 0 &&
+            lstSearchBookResults.map((book) => (
               <Book
                 key={book.id}
                 data={book}
