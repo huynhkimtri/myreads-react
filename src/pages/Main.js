@@ -1,12 +1,8 @@
+import { Link } from "react-router-dom";
 import Bookshelf from "../components/Bookshelf";
 import { CURRENTLY_READING, READ, WANT_TO_READ } from "../utils/constants";
 
-const Main = ({
-  lstBook,
-  updateBookStatus,
-  showSearchPage,
-  setShowSearchpage,
-}) => {
+const Main = ({ lstBook, onUpdateBookshelf }) => {
   const lstBookCurrentRead = lstBook.filter(
     (book) => CURRENTLY_READING === book.shelf
   );
@@ -26,21 +22,21 @@ const Main = ({
         <Bookshelf
           title="Currently Reading"
           lstBook={lstBookCurrentRead}
-          onUpdateBookshelf={updateBookStatus}
+          onUpdateBookshelf={onUpdateBookshelf}
         />
         <Bookshelf
           title="Want to Read"
           lstBook={lstBookWantToRead}
-          onUpdateBookshelf={updateBookStatus}
+          onUpdateBookshelf={onUpdateBookshelf}
         />
         <Bookshelf
           title="Read"
           lstBook={lstBookRead}
-          onUpdateBookshelf={updateBookStatus}
+          onUpdateBookshelf={onUpdateBookshelf}
         />
       </div>
       <div className="open-search">
-        <a onClick={() => setShowSearchpage(!showSearchPage)}>Add a book</a>
+        <Link to="/search">Add a book</Link>
       </div>
     </div>
   );

@@ -7,16 +7,15 @@ import Search from "./pages/Search";
 
 function App() {
   let navigate = useNavigate();
-  const [showSearchPage, setShowSearchpage] = useState(false);
   const [lstBook, setLstBook] = useState([]);
 
-  const getAllListOfBook = async () => {
-    const res = await BooksAPI.getAll();
-    console.log("🚀 ~ getAllListOfBook ~ res:", res);
-    setLstBook(res);
-  };
-
   useState(() => {
+    const getAllListOfBook = async () => {
+      const res = await BooksAPI.getAll();
+      console.log("🚀 ~ getAllListOfBook ~ res:", res);
+      setLstBook(res);
+    };
+
     getAllListOfBook();
   }, []);
 
@@ -37,22 +36,12 @@ function App() {
         exact
         path="/"
         element={
-          <div className="app">
-            {showSearchPage ? (
-              <Search
-                setShowSearchpage={setShowSearchpage}
-                showSearchPage={showSearchPage}
-              />
-            ) : (
-              <Main
-                lstBook={lstBook}
-                updateBookStatus={updateBookStatus}
-                setShowSearchpage={setShowSearchpage}
-                showSearchPage={showSearchPage}
-              />
-            )}
-          </div>
+          <Main lstBook={lstBook} onUpdateBookshelf={updateBookStatus} />
         }
+      />
+      <Route
+        path="/search"
+        element={<Search onUpdateBookshelf={updateBookStatus} />}
       />
     </Routes>
   );
