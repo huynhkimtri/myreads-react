@@ -1,10 +1,6 @@
 const Book = ({ lstBook, book, onUpdateBookshelf }) => {
   const handleShelfChange = (newShefl) => {
-    const currentShelf = book.shelf;
-    console.log("🚀 ~ handleShelfChange ~ currentShelf:", currentShelf);
-    console.log("🚀 ~ handleShelfChange ~ option:", newShefl);
-
-    if (currentShelf !== newShefl) {
+    if (newShefl !== book.shelf) {
       onUpdateBookshelf(book, newShefl);
     }
   };

@@ -21,7 +21,6 @@ const Search = ({ lstBook, onUpdateBookshelf }) => {
 
   const handleSearchBook = async (searchQuery) => {
     const res = await BooksAPI.search(searchQuery, MAX_RESULT);
-    console.log("🚀 ~ getLstSearchBook ~ res:", res);
     setLstSearchBookResults(res);
   };
 
