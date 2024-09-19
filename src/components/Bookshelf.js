@@ -10,7 +10,8 @@ const Bookshelf = ({ title, lstBook, onUpdateBookshelf }) => {
             lstBook.map((book) => (
               <Book
                 key={book.id}
-                data={book}
+                lstBook={lstBook}
+                book={book}
                 onUpdateBookshelf={onUpdateBookshelf}
               />
             ))}

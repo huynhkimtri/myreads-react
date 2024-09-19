@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as BooksAPI from "./utils/BooksAPI";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import Main from "./pages/Main";
@@ -9,7 +9,7 @@ function App() {
   let navigate = useNavigate();
   const [lstBook, setLstBook] = useState([]);
 
-  useState(() => {
+  useEffect(() => {
     const getAllListOfBook = async () => {
       const res = await BooksAPI.getAll();
       console.log("🚀 ~ getAllListOfBook ~ res:", res);
@@ -19,15 +19,29 @@ function App() {
     getAllListOfBook();
   }, []);
 
-  const updateBookStatus = async (book, targetShelf) => {
-    console.log("🚀 ~ updateBookStatus ~ targetShelf:", targetShelf);
-    await BooksAPI.update(book, targetShelf);
-    const updateLstBook = lstBook.map((b) =>
-      b.id !== book.id ? b : Object.assign({}, b, { shelf: targetShelf })
-    );
-    console.log("🚀 ~ updateBookStatus ~ updateLstBook:", updateLstBook);
-    setLstBook(updateLstBook);
-    navigate("/");
+  const updateBookStatus = async (book, newShelf) => {
+    console.log("🚀 ~ updateBookStatus ~ book:", book);
+    console.log("🚀 ~ updateBookStatus ~ newShelf:", newShelf);
+    await BooksAPI.update(book, newShelf);
+
+    // Check if the book already exists
+    const index = lstBook.findIndex((b) => b.id === book.id);
+
+    if (index !== -1) {
+      // If it exists, update the book
+      const updatedLstBooks = [...lstBook];
+      updatedLstBooks[index] = { ...book, newShelf };
+      console.log("🚀 ~ If it exists, update the book:", updatedLstBooks);
+      setLstBook(updatedLstBooks);
+    } else {
+      // If it doesn't exist, add the new book
+      console.log([...lstBook, book]);
+      console.log("🚀 ~ If it doesn't exist, add the new book:", [
+        ...lstBook,
+        book,
+      ]);
+      setLstBook([...lstBook, book]);
+    }
   };
 
   return (
@@ -41,7 +55,9 @@ function App() {
       />
       <Route
         path="/search"
-        element={<Search onUpdateBookshelf={updateBookStatus} />}
+        element={
+          <Search lstBook={lstBook} onUpdateBookshelf={updateBookStatus} />
+        }
       />
     </Routes>
   );

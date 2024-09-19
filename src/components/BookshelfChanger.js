@@ -1,7 +1,10 @@
-const BookshelfChanger = ({ selectedOption, handleChange }) => {
+const BookshelfChanger = ({ lstBook, book, handleShelfChange }) => {
   return (
     <div className="book-shelf-changer">
-      <select value={selectedOption} onChange={handleChange}>
+      <select
+        value={lstBook.find((b) => b.id === book.id)?.shelf || "none"}
+        onChange={(e) => handleShelfChange(book.id, e.target.value)}
+      >
         <option value="none" disabled>
           Move to...
         </option>

@@ -1,18 +1,11 @@
-import { useState } from "react";
-import BookshelfChanger from "./BookshelfChanger";
+const Book = ({ lstBook, book, onUpdateBookshelf }) => {
+  const handleShelfChange = (newShefl) => {
+    const currentShelf = book.shelf;
+    console.log("🚀 ~ handleShelfChange ~ currentShelf:", currentShelf);
+    console.log("🚀 ~ handleShelfChange ~ option:", newShefl);
 
-const Book = ({ data, onUpdateBookshelf }) => {
-  const [selectedOption, setSelectedOption] = useState("");
-
-  const handleChange = (event) => {
-    const option = event.target.value;
-    const currentShelf = data.shelf;
-    console.log("🚀 ~ handleChange ~ currentShelf:", currentShelf);
-    console.log("🚀 ~ handleChange ~ option:", option);
-
-    if (currentShelf !== option) {
-      onUpdateBookshelf(data, option);
-      setSelectedOption(option);
+    if (currentShelf !== newShefl) {
+      onUpdateBookshelf(book, newShefl);
     }
   };
 
@@ -24,18 +17,28 @@ const Book = ({ data, onUpdateBookshelf }) => {
           style={{
             width: 128,
             height: 193,
-            backgroundImage: `url(${data.imageLinks?.thumbnail})`,
+            backgroundImage: `url(${book.imageLinks?.thumbnail})`,
           }}
         ></div>
-        <BookshelfChanger
-          selectedOption={data.shelf}
-          handleChange={handleChange}
-        />
+        <div className="book-shelf-changer">
+          <select
+            value={lstBook.find((b) => b.id === book.id)?.shelf || "none"}
+            onChange={(e) => handleShelfChange(e.target.value)}
+          >
+            <option value="moveto" disabled>
+              Move to...
+            </option>
+            <option value="currentlyReading">Currently Reading</option>
+            <option value="wantToRead">Want to Read</option>
+            <option value="read">Read</option>
+            <option value="none">None</option>
+          </select>
+        </div>
       </div>
-      <span style={{ display: "none" }}>{data.id}</span>
-      <div className="book-title">{data.title}</div>
+      <span style={{ display: "none" }}>{book.id}</span>
+      <div className="book-title">{book.title}</div>
       <div className="book-authors">
-        {data.authors ? data.authors.join(", ") : ["Unknown Author"]}
+        {book.authors ? book.authors.join(", ") : ["Unknown Author"]}
       </div>
     </div>
   );

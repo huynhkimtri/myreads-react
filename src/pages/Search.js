@@ -5,7 +5,7 @@ import * as BooksAPI from "../utils/BooksAPI";
 import { MAX_RESULT } from "../utils/constants";
 import { debounce } from "../utils/debounce";
 
-const Search = ({ onUpdateBookshelf }) => {
+const Search = ({ lstBook, onUpdateBookshelf }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [lstSearchBookResults, setLstSearchBookResults] = useState([]);
 
@@ -48,7 +48,8 @@ const Search = ({ onUpdateBookshelf }) => {
             lstSearchBookResults.map((book) => (
               <Book
                 key={book.id}
-                data={book}
+                lstBook={lstBook}
+                book={book}
                 onUpdateBookshelf={onUpdateBookshelf}
               />
             ))}
