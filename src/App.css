@@ -129,11 +129,18 @@ body,
 .book-authors {
   font-size: 0.8em;
 }
+.book-title > a {
+  font-weight: 800;
+}
 .book-title {
   margin-top: 10px;
 }
 .book-authors {
   color: #999;
+}
+
+.book-detail {
+  margin: 10px;
 }
 
 .book-top {

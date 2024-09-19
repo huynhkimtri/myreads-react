@@ -4,6 +4,7 @@ import * as BooksAPI from "./utils/BooksAPI";
 import { Route, Routes } from "react-router-dom";
 import Main from "./pages/Main";
 import Search from "./pages/Search";
+import BookDetail from "./components/BookDetail";
 
 function App() {
   const [lstBook, setLstBook] = useState([]);
@@ -51,6 +52,7 @@ function App() {
           <Search lstBook={lstBook} onUpdateBookshelf={updateBookStatus} />
         }
       />
+      <Route path="/book/:id" element={<BookDetail />} />
     </Routes>
   );
 }
