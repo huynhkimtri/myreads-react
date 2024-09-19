@@ -1,7 +1,7 @@
 const Book = ({ lstBook, book, onUpdateBookshelf }) => {
-  const handleShelfChange = (newShefl) => {
-    if (newShefl !== book.shelf) {
-      onUpdateBookshelf(book, newShefl);
+  const handleShelfChange = (newShelf) => {
+    if (newShelf !== book.shelf) {
+      onUpdateBookshelf(book, newShelf);
     }
   };
 
