@@ -10,8 +10,8 @@ const Search = ({ lstBook, onUpdateBookshelf }) => {
   const [lstSearchBookResults, setLstSearchBookResults] = useState([]);
 
   const handleSearchInputChange = (value) => {
+    setSearchQuery(value);
     const query = value.trim();
-    setSearchQuery(query);
     if (query.length > 0) {
       debouncedSearchResults(query);
     } else {
